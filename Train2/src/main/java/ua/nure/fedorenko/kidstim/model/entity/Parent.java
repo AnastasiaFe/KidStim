@@ -11,6 +11,27 @@ import java.util.List;
 @Table(name = "parent")
 public class Parent implements Serializable {
 
+    @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid")
+    @Column(name = "id")
+    private String id;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "surname")
+    private String surname;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "parent_child", joinColumns = {@JoinColumn(name = "parentId")}, inverseJoinColumns = {@JoinColumn(name = "childId")})
+    private List<Child> children;
 
     public Parent(String id, String email, String password, String name, String surname) {
         this(email, password, name, surname);
@@ -25,20 +46,15 @@ public class Parent implements Serializable {
         children = new ArrayList<>();
     }
 
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid")
-    @Column(name = "id")
+
     public String getId() {
         return id;
-
     }
 
     public void setId(String id) {
         this.id = id;
     }
 
-    @Column(name = "email")
     public String getEmail() {
         return email;
     }
@@ -47,7 +63,6 @@ public class Parent implements Serializable {
         this.email = email;
     }
 
-    @Column(name = "password")
     public String getPassword() {
         return password;
     }
@@ -56,7 +71,7 @@ public class Parent implements Serializable {
         this.password = password;
     }
 
-    @Column(name = "name")
+
     public String getName() {
         return name;
     }
@@ -65,7 +80,6 @@ public class Parent implements Serializable {
         this.name = name;
     }
 
-    @Column(name = "surname")
     public String getSurname() {
         return surname;
     }
@@ -74,8 +88,6 @@ public class Parent implements Serializable {
         this.surname = surname;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "parent_child", joinColumns = {@JoinColumn(name = "parentId", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "childId", referencedColumnName = "id")})
     public List<Child> getChildren() {
         return children;
     }
@@ -83,14 +95,5 @@ public class Parent implements Serializable {
     public void setChildren(List<Child> children) {
         this.children = children;
     }
-
-    private String id;
-    private String email;
-    private String password;
-    private String name;
-    private String surname;
-    private List<Child> children;
-
-
 
 }

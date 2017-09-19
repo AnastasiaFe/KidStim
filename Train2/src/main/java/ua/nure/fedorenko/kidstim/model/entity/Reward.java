@@ -10,18 +10,31 @@ import java.util.List;
 @Table
 public class Reward implements Serializable {
 
-    private String id;
-    private String description;
-    private int points;
-    private RewardStatus status;
-    private List<Child> children;
-    private Parent parent;
-
-
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid")
     @Column(name = "id")
+    private String id;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "points")
+    private int points;
+
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "status")
+    private RewardStatus status;
+
+    @ManyToMany
+    @JoinTable(name = "child_reward", joinColumns = {@JoinColumn(name = "rewardId")}, inverseJoinColumns = {@JoinColumn(name = "childId")})
+    private List<Child> children;
+
+    @ManyToOne
+    @JoinColumn(name = "parent")
+    private Parent parent;
+
+
     public String getId() {
         return id;
     }
@@ -30,8 +43,6 @@ public class Reward implements Serializable {
         this.id = id;
     }
 
-    @Enumerated(EnumType.ORDINAL)
-    @Column(name = "status")
     public RewardStatus getStatus() {
         return status;
     }
@@ -40,7 +51,7 @@ public class Reward implements Serializable {
         this.status = status;
     }
 
-    @Column(name = "description")
+
     public String getDescription() {
         return description;
     }
@@ -49,16 +60,28 @@ public class Reward implements Serializable {
         this.description = description;
     }
 
-    @Column(name = "points")
     public int getPoints() {
         return points;
     }
 
-    public void setPoints(int points) {
+    public Reward(String description, int points, RewardStatus status,Parent parent) {
+        this.description = description;
         this.points = points;
+        this.status = status;
+        this.parent = parent;
     }
 
-    @JoinTable(name = "reward_child", joinColumns = {@JoinColumn(name = "rewardId", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "childId", referencedColumnName = "id")})
+    public Reward(String id, String description, int points, RewardStatus status, Parent parent) {
+
+        this(description,points,status,parent);
+        this.id = id;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+
+    }
+
     public List<Child> getChildren() {
         return children;
     }
@@ -67,8 +90,6 @@ public class Reward implements Serializable {
         this.children = children;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "parent",referencedColumnName = "id")
     public Parent getParent() {
         return parent;
     }

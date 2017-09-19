@@ -11,7 +11,38 @@ import java.util.List;
 @Table
 public class Task implements Serializable {
 
+    @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid")
+    @Column(name = "id")
+    private String id;
+
     @Column(name = "description")
+    private String description;
+
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "status")
+    private TaskStatus status;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "creationDate")
+    private Date creationDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "expirationDate")
+    private Date expirationDate;
+
+    @Column(name = "points")
+    private int points;
+
+    @ManyToMany
+    @JoinTable(name = "task_child", joinColumns = {@JoinColumn(name = "taskId", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "childId", referencedColumnName = "id")})
+    private List<Child> children;
+
+    @ManyToOne
+    @JoinColumn(name = "parent")
+    private Parent parent;
+
     public String getDescription() {
         return description;
     }
@@ -20,8 +51,7 @@ public class Task implements Serializable {
         this.description = description;
     }
 
-    @Enumerated(EnumType.ORDINAL)
-    @Column(name = "status")
+
     public TaskStatus getStatus() {
         return status;
     }
@@ -30,8 +60,7 @@ public class Task implements Serializable {
         this.status = status;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "creationDate")
+
     public Date getCreationDate() {
         return creationDate;
     }
@@ -40,8 +69,7 @@ public class Task implements Serializable {
         this.creationDate = creationDate;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "expirationDate")
+
     public Date getExpirationDate() {
         return expirationDate;
     }
@@ -50,7 +78,7 @@ public class Task implements Serializable {
         this.expirationDate = expirationDate;
     }
 
-    @Column(name = "points")
+
     public int getPoints() {
         return points;
     }
@@ -59,7 +87,6 @@ public class Task implements Serializable {
         this.points = points;
     }
 
-    @JoinTable(name = "task_child", joinColumns = {@JoinColumn(name = "taskId", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "childId", referencedColumnName = "id")})
     public List<Child> getChildren() {
         return children;
     }
@@ -69,10 +96,6 @@ public class Task implements Serializable {
     }
 
 
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid")
-    @Column(name = "id")
     public String getId() {
         return id;
     }
@@ -82,8 +105,6 @@ public class Task implements Serializable {
     }
 
 
-    @ManyToOne
-    @JoinColumn(name = "parent")
     public Parent getParent() {
         return parent;
     }
@@ -91,15 +112,5 @@ public class Task implements Serializable {
     public void setParent(Parent parent) {
         this.parent = parent;
     }
-
-    private String id;
-    private String description;
-    private TaskStatus status;
-    private Date creationDate;
-    private Date expirationDate;
-    private int points;
-    private List<Child> children;
-    private Parent parent;
-
 
 }

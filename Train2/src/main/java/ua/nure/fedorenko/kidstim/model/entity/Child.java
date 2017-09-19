@@ -12,22 +12,44 @@ import java.util.List;
 @Table(name = "child")
 public class Child implements Serializable {
 
-    private String id;
-    private String email;
-    private String password;
-    private String name;
-    private String surname;
-    private Date dateOfBirth;
-    private int gender;
-    private String photo;
-    private int points;
-    private List<Task> tasks;
-    private List<Reward> rewards;
-
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid")
     @Column(name = "id")
+    private String id;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "surname")
+    private String surname;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "dateOfBirth")
+    private Date dateOfBirth;
+
+    @Column(name = "gender")
+    private int gender;
+
+    @Column(name = "photo")
+    private String photo;
+
+    @Column(name = "points")
+    private int points;
+
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "children")
+    private List<Task> tasks;
+
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "children")
+    private List<Reward> rewards;
+
+
     public String getId() {
         return id;
     }
@@ -36,7 +58,6 @@ public class Child implements Serializable {
         this.id = id;
     }
 
-    @Column(name = "email")
     public String getEmail() {
         return email;
     }
@@ -63,7 +84,6 @@ public class Child implements Serializable {
         this.email = email;
     }
 
-    @Column(name = "password")
     public String getPassword() {
         return password;
     }
@@ -72,13 +92,11 @@ public class Child implements Serializable {
         this.password = password;
     }
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "dateOfBirth")
+
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -87,7 +105,7 @@ public class Child implements Serializable {
         this.name = name;
     }
 
-    @Column(name = "surname")
+
     public String getSurname() {
         return surname;
     }
@@ -100,7 +118,7 @@ public class Child implements Serializable {
         this.dateOfBirth = dateOfBirth;
     }
 
-    @Column(name = "gender")
+
     public int getGender() {
         return gender;
     }
@@ -109,7 +127,7 @@ public class Child implements Serializable {
         this.gender = gender;
     }
 
-    @Column(name = "photo")
+
     public String getPhoto() {
         return photo;
     }
@@ -118,7 +136,6 @@ public class Child implements Serializable {
         this.photo = photo;
     }
 
-    @Column(name = "points")
     public int getPoints() {
         return points;
     }
@@ -127,7 +144,6 @@ public class Child implements Serializable {
         this.points = points;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "children")
     public List<Reward> getRewards() {
         return rewards;
     }
@@ -136,7 +152,6 @@ public class Child implements Serializable {
         this.rewards = rewards;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "children")
     public List<Task> getTasks() {
         return tasks;
     }
