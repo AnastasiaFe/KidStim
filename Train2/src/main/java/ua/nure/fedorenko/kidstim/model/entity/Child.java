@@ -4,7 +4,6 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -43,10 +42,10 @@ public class Child implements Serializable {
     @Column(name = "points")
     private int points;
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "children")
+    @ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST,CascadeType.REFRESH}, mappedBy = "children")
     private List<Task> tasks;
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "children")
+    @ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.REMOVE}, mappedBy = "children")
     private List<Reward> rewards;
 
 
@@ -76,8 +75,6 @@ public class Child implements Serializable {
         this.gender = gender;
         this.photo = photo;
         this.points = points;
-        tasks = new ArrayList<>();
-        rewards = new ArrayList<>();
     }
 
     public void setEmail(String email) {

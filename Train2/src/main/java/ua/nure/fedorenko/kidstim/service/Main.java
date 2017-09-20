@@ -19,19 +19,27 @@ public class Main {
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
-            Parent parent=new Parent("nastia.federenko@gmail.com","123456","Anastasia","Fedorenko");
-            List<Child>children=new ArrayList<>();
-            Child child1=new Child("ana@nure.ua","123456","Ana","F",new Date(1997,1,12),1,"ggg.png",0);
-            Child child2=new Child("anga@nure.ua","12345g6","Affna","F",new Date(1997,1,12),1,"gffgg.png",5);
+            Parent parent = new Parent("hohoh.federenko@gmail.com", "123456", "Anastasia", "Fedorenko");
+            List<Child> children = new ArrayList<>();
+            Child child1 = new Child("ana@nure.ua", "123456", "Ana", "F", new Date(1997, 1, 12), 1, "ggg.png", 0);
+            Child child2 = new Child("anga@nure.ua", "12345g6", "Affna", "F", new Date(1997, 1, 12), 1, "gffgg.png", 5);
             children.add(child1);
             children.add(child2);
 
             parent.setChildren(children);
             session.save(parent);
-            Reward reward=new Reward("To go to the zoo",45, RewardStatus.RECEIVED,parent);
+            //parent.getChildren().remove(child1);
+            //session.remove(child1);
+            Reward reward = new Reward("To go to the zoo", 45, RewardStatus.RECEIVED, parent);
             reward.setChildren(children);
             session.save(reward);
+            reward.setPoints(980);
+            session.update(reward);
+            //session.save(reward);
 
+
+            // session.remove(reward);
+            // reward.setChildren(children);
 
 
             transaction.commit();

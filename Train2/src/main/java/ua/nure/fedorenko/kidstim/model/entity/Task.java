@@ -35,8 +35,8 @@ public class Task implements Serializable {
     @Column(name = "points")
     private int points;
 
-    @ManyToMany
-    @JoinTable(name = "task_child", joinColumns = {@JoinColumn(name = "taskId", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "childId", referencedColumnName = "id")})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(name = "child_task", joinColumns = {@JoinColumn(name = "taskId", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "childId", referencedColumnName = "id")})
     private List<Child> children;
 
     @ManyToOne

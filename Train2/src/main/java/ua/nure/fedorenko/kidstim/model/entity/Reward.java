@@ -26,7 +26,7 @@ public class Reward implements Serializable {
     @Column(name = "status")
     private RewardStatus status;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "child_reward", joinColumns = {@JoinColumn(name = "rewardId")}, inverseJoinColumns = {@JoinColumn(name = "childId")})
     private List<Child> children;
 

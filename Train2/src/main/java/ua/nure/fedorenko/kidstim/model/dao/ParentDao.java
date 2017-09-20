@@ -1,6 +1,9 @@
 package ua.nure.fedorenko.kidstim.model.dao;
 
+import ua.nure.fedorenko.kidstim.model.entity.Child;
 import ua.nure.fedorenko.kidstim.model.entity.Parent;
+
+import java.util.List;
 
 public interface ParentDao {
 
@@ -34,4 +37,6 @@ public interface ParentDao {
      * @return updated entity of parent
      */
     Parent updateParent(Parent parent);
+
+    List<Parent>getParentsByChild(Child child);
 }
