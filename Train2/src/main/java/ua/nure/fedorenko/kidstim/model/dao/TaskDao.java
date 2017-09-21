@@ -1,6 +1,9 @@
 package ua.nure.fedorenko.kidstim.model.dao;
 
+import ua.nure.fedorenko.kidstim.model.entity.Parent;
 import ua.nure.fedorenko.kidstim.model.entity.Task;
+
+import java.util.List;
 
 public interface TaskDao {
     /**
@@ -33,4 +36,6 @@ public interface TaskDao {
      */
     void deleteTask(Task task);
 
+
+    List<Task>getTasksByParent(String parentId);
 }

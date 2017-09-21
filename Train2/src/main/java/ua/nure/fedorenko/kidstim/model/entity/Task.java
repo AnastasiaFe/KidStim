@@ -20,6 +20,16 @@ public class Task implements Serializable {
     @Column(name = "description")
     private String description;
 
+    public Task(String description, TaskStatus status, Date expirationDate, int points, Parent parent, List<Child> children) {
+        this.description = description;
+        this.status = status;
+        this.expirationDate = expirationDate;
+        creationDate = new Date();
+        this.points = points;
+        this.parent = parent;
+        this.children = children;
+    }
+
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "status")
     private TaskStatus status;

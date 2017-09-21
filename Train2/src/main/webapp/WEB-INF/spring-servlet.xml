@@ -1,59 +1,79 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<!-- Specifying base package of the Components like Controller, Service, 
-		DAO -->
-	<context:component-scan base-package="ua.nure.fedorenko.kidstim" />
+    <!-- Specifying base package of the Components like Controller, Service,
+        DAO -->
+    <context:component-scan base-package="ua.nure.fedorenko.kidstim"/>
 
-	<!-- Getting Database properties -->
-	<context:property-placeholder location="classpath:application.properties" />
+    <!-- Getting Database properties -->
+    <context:property-placeholder location="classpath:application.properties"/>
 
-	<mvc:annotation-driven />
+    <mvc:annotation-driven/>
 
-	<!-- Specifying the Resource location to load JS, CSS, Images etc -->
-	<mvc:resources mapping="/resources/**" location="/resources/" />
+    <!-- Specifying the Resource location to load JS, CSS, Images etc -->
+    <mvc:resources mapping="/resources/**" location="/resources/"/>
 
-	<!-- View Resolver -->
-	<bean
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/WEB-INF/pages/" />
-		<property name="suffix" value=".jsp" />
-	</bean>
+    <bean id="parentDao" class="ua.nure.fedorenko.kidstim.model.dao.impl.ParentDaoImpl"/>
+    <bean id="childDao" class="ua.nure.fedorenko.kidstim.model.dao.impl.ChildDaoImpl"/>
+    <bean id="taskDao" class="ua.nure.fedorenko.kidstim.model.dao.impl.TaskDaoImpl"/>
+    <bean id="rewardDao" class="ua.nure.fedorenko.kidstim.model.dao.impl.RewardDaoImpl"/>
 
-	<!-- DataSource -->
-	<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-		id="dataSource">
-		<property name="driverClassName" value="${database.driver}"/>
-		<property name="url" value="${database.url}"/>
-		<property name="username" value="${database.user}"/>
-		<property name="password" value="${database.password}"/>
-	</bean>
 
-	<!-- Hibernate SessionFactory -->
-	<bean id="sessionFactory"
-		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-		<property name="dataSource" ref="dataSource"/>
-		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
-				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
-				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
-				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
-			</props>
-		</property>
-		<property name="packagesToScan" value="ua.nure.fedorenko.kidstim"/>
-	</bean>
+    <bean id="parentService" class="ua.nure.fedorenko.kidstim.service.impl.ParentServiceImpl"/>
+    <bean id="childService" class="ua.nure.fedorenko.kidstim.service.impl.ChildServiceImpl"/>
+    <bean id="taskService" class="ua.nure.fedorenko.kidstim.service.impl.TaskServiceImpl"/>
+    <bean id="rewardService" class="ua.nure.fedorenko.kidstim.service.impl.RewardServiceImpl"/>
+    <bean id="todoService" class="ua.nure.fedorenko.kidstim.service.TodoServiceImpl"/>
 
-	<!-- Transaction -->
-	<bean id="transactionManager"
-		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
+    <bean id="todoController" class="ua.nure.fedorenko.kidstim.controller.TodoController"/>
 
-	<tx:annotation-driven transaction-manager="transactionManager" />
+    <!-- DataSource -->
+    <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+          id="dataSource">
+        <property name="driverClassName" value="${database.driver}"/>
+        <property name="url" value="${database.url}"/>
+        <property name="username" value="${database.user}"/>
+        <property name="password" value="${database.password}"/>
+    </bean>
+
+    <!-- Hibernate SessionFactory -->
+    <bean id="sessionFactory"
+          class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+                <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+            </props>
+        </property>
+        <property name="packagesToScan" value="ua.nure.fedorenko.kidstim"/>
+    </bean>
+
+    <!-- Transaction -->
+    <bean id="transactionManager"
+          class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+
+    <bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+        <property name="resourceLoaderPath" value="/WEB-INF/html/"/>
+    </bean>
+
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
+        <property name="cache" value="true"/>
+        <property name="prefix" value=""/>
+        <property name="suffix" value=".html"/>
+        <property name="exposeSpringMacroHelpers" value="true"/>
+    </bean>
 </beans>
