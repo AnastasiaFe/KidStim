@@ -11,6 +11,10 @@ import java.util.List;
 @Table(name = "parent")
 public class Parent implements Serializable {
 
+    public Parent() {
+
+    }
+
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid")

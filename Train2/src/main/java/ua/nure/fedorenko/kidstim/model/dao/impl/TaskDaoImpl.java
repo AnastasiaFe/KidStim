@@ -4,7 +4,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import ua.nure.fedorenko.kidstim.model.dao.TaskDao;
-import ua.nure.fedorenko.kidstim.model.entity.Parent;
 import ua.nure.fedorenko.kidstim.model.entity.Task;
 
 import java.util.List;

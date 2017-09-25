@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ua.nure.fedorenko.kidstim.model.entity.*;
 
 
@@ -15,7 +16,7 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
 
-        Session session = buildSessionFactory().openSession();
+       /* Session session = buildSessionFactory().openSession();
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
@@ -48,7 +49,11 @@ public class Main {
             e.printStackTrace();
         } finally {
             session.close();
-        }
+        }*/
+
+       String pas="123dfgdhdf456";
+        BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
+        System.out.println(encoder.encode(pas).length());
 
     }
 

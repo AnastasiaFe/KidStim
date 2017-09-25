@@ -1,6 +1,7 @@
 package ua.nure.fedorenko.kidstim.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.nure.fedorenko.kidstim.model.dao.ParentDao;
@@ -15,9 +16,14 @@ public class ParentServiceImpl implements ParentService {
     @Autowired
     ParentDao parentDao;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+
     @Transactional
     @Override
     public void addParent(Parent parent) {
+        parent.setPassword(bCryptPasswordEncoder.encode(parent.getPassword()));
         parent.setChildren(new ArrayList<>());
         parentDao.addParent(parent);
     }
