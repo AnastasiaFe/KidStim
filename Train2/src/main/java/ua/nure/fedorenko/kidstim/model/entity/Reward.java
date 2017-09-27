@@ -30,7 +30,7 @@ public class Reward implements Serializable {
     @JoinTable(name = "child_reward", joinColumns = {@JoinColumn(name = "rewardId")}, inverseJoinColumns = {@JoinColumn(name = "childId")})
     private List<Child> children;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent")
     private Parent parent;
 
@@ -64,7 +64,7 @@ public class Reward implements Serializable {
         return points;
     }
 
-    public Reward(String description, int points, RewardStatus status,Parent parent) {
+    public Reward(String description, int points, RewardStatus status, Parent parent) {
         this.description = description;
         this.points = points;
         this.status = status;
@@ -73,7 +73,7 @@ public class Reward implements Serializable {
 
     public Reward(String id, String description, int points, RewardStatus status, Parent parent) {
 
-        this(description,points,status,parent);
+        this(description, points, status, parent);
         this.id = id;
     }
 

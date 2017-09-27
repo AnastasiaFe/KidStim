@@ -10,8 +10,12 @@ import java.util.List;
 
 public class TaskDaoImpl implements TaskDao {
 
-    @Autowired
+
     private SessionFactory sessionFactory;
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public Task getTaskById(String id) {

@@ -1,17 +1,15 @@
 package ua.nure.fedorenko.kidstim.service;
 
 
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ua.nure.fedorenko.kidstim.model.entity.*;
 
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -51,9 +49,28 @@ public class Main {
             session.close();
         }*/
 
-       String pas="123dfgdhdf456";
-        BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
-        System.out.println(encoder.encode(pas).length());
+        String email = "ana@nure.ua";
+
+        SessionFactory sessionFactory = buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        Parent parent = new Parent();
+        parent.setEmail("nast@nure.ua");
+        parent.setPassword("123456");
+
+        session.save(parent);
+        Child child = new Child();
+        child.setEmail("lena@nure.ua");
+        child.setPassword("123456");
+        child.setTasks(null);
+        session.save(child);
+
+
+
+        List<Child> children = new ArrayList<>();
+        children.add(child);
+        parent.setChildren(children);
+        Task task = new Task("gfg", TaskStatus.CREATED, new Date(), 20, parent, children);
+        session.save(task);
 
     }
 

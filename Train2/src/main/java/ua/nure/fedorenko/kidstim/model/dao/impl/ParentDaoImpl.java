@@ -1,5 +1,6 @@
 package ua.nure.fedorenko.kidstim.model.dao.impl;
 
+import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,14 @@ import java.util.List;
 
 @Repository
 public class ParentDaoImpl implements ParentDao {
+    private static final Logger LOGGER=Logger.getLogger(ParentDaoImpl.class);
 
-    @Autowired
+
     private SessionFactory sessionFactory;
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public void addParent(Parent parent) {
@@ -23,12 +29,16 @@ public class ParentDaoImpl implements ParentDao {
 
     @Override
     public Parent getParentById(String id) {
+
         return sessionFactory.getCurrentSession().get(Parent.class, id);
     }
 
     @Override
     public Parent getParentByEmail(String email) {
-        return sessionFactory.getCurrentSession().get(Parent.class, email);
+        LOGGER.info("Get parent by email is working");
+        Parent parent=sessionFactory.getCurrentSession().get(Parent.class, email);
+        LOGGER.info(parent);
+        return parent;
     }
 
     @Override

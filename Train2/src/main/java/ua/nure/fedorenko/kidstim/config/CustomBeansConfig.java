@@ -3,6 +3,7 @@ package ua.nure.fedorenko.kidstim.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ua.nure.fedorenko.kidstim.model.dao.ChildDao;
 import ua.nure.fedorenko.kidstim.model.dao.ParentDao;
@@ -16,10 +17,7 @@ import ua.nure.fedorenko.kidstim.service.ChildService;
 import ua.nure.fedorenko.kidstim.service.ParentService;
 import ua.nure.fedorenko.kidstim.service.RewardService;
 import ua.nure.fedorenko.kidstim.service.TaskService;
-import ua.nure.fedorenko.kidstim.service.impl.ChildServiceImpl;
-import ua.nure.fedorenko.kidstim.service.impl.ParentServiceImpl;
-import ua.nure.fedorenko.kidstim.service.impl.RewardServiceImpl;
-import ua.nure.fedorenko.kidstim.service.impl.TaskServiceImpl;
+import ua.nure.fedorenko.kidstim.service.impl.*;
 
 @Configuration
 @ComponentScan({"ua.nure.fedorenko.kidstim"})
@@ -70,4 +68,8 @@ public class CustomBeansConfig {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new UserDetailsServiceImpl();
+    }
 }

@@ -49,7 +49,7 @@ public class Task implements Serializable {
     @JoinTable(name = "child_task", joinColumns = {@JoinColumn(name = "taskId", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "childId", referencedColumnName = "id")})
     private List<Child> children;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent")
     private Parent parent;
 

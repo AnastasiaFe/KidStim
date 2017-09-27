@@ -7,8 +7,12 @@ import ua.nure.fedorenko.kidstim.model.entity.Reward;
 
 public class RewardDaoImpl implements RewardDao {
 
-    @Autowired
+
     private SessionFactory sessionFactory;
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public Reward getRewardById(String id) {
