@@ -1,6 +1,7 @@
 package ua.nure.fedorenko.kidstim.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.nure.fedorenko.kidstim.model.dao.ChildDao;
@@ -10,6 +11,7 @@ import ua.nure.fedorenko.kidstim.service.ChildService;
 
 import java.util.ArrayList;
 
+@Transactional
 @Service
 public class ChildServiceImpl implements ChildService {
 
@@ -19,15 +21,15 @@ public class ChildServiceImpl implements ChildService {
     @Autowired
     private ParentDao parentDao;
 
-    @Transactional
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Override
     public void addChild(Child child) {
-        child.setRewards(new ArrayList<>());
-        child.setTasks(new ArrayList<>());
+        child.setPassword(bCryptPasswordEncoder.encode(child.getPassword()));
         childDao.addChild(child);
     }
 
-    @Transactional
     @Override
     public void deleteChild(Child child) {
         parentDao.getParentsByChild(child).forEach(e -> e.getChildren().remove(child));
@@ -40,6 +42,7 @@ public class ChildServiceImpl implements ChildService {
     public Child getChildById(String id) {
         return childDao.getChildById(id);
     }
+
 
     @Override
     public Child getChildByEmail(String email) {

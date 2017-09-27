@@ -7,6 +7,7 @@ import ua.nure.fedorenko.kidstim.model.dao.RewardDao;
 import ua.nure.fedorenko.kidstim.model.entity.Reward;
 import ua.nure.fedorenko.kidstim.service.RewardService;
 
+@Transactional
 @Service
 public class RewardServiceImpl implements RewardService {
 
@@ -18,7 +19,6 @@ public class RewardServiceImpl implements RewardService {
         return rewardDao.getRewardById(id);
     }
 
-    @Transactional
     @Override
     public void addReward(Reward reward) {
         rewardDao.addReward(reward);
@@ -29,7 +29,6 @@ public class RewardServiceImpl implements RewardService {
         return rewardDao.updateReward(reward);
     }
 
-    @Transactional
     @Override
     public void deleteReward(Reward reward) {
         rewardDao.deleteReward(reward);

@@ -18,9 +18,7 @@ public class JWTAuthenticationFilter extends GenericFilterBean {
     private static final Logger LOGGER = Logger.getLogger(JWTAuthenticationFilter.class);
 
     @Override
-    public void doFilter(ServletRequest request,
-                         ServletResponse response,
-                         FilterChain filterChain)
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
             throws IOException, ServletException {
         LOGGER.info("Authentication filter is working...");
         Authentication authentication = TokenAuthenticationService
@@ -28,8 +26,7 @@ public class JWTAuthenticationFilter extends GenericFilterBean {
         if (authentication != null) {
             LOGGER.info("Is authenticated:" + authentication.isAuthenticated());
         }
-        SecurityContextHolder.getContext()
-                .setAuthentication(authentication);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
     }
 }

@@ -10,6 +10,7 @@ import ua.nure.fedorenko.kidstim.service.ParentService;
 
 import java.util.ArrayList;
 
+@Transactional
 @Service
 public class ParentServiceImpl implements ParentService {
 
@@ -19,8 +20,6 @@ public class ParentServiceImpl implements ParentService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-
-    @Transactional
     @Override
     public void addParent(Parent parent) {
         parent.setPassword(bCryptPasswordEncoder.encode(parent.getPassword()));
@@ -28,12 +27,10 @@ public class ParentServiceImpl implements ParentService {
         parentDao.addParent(parent);
     }
 
-    @Transactional
     @Override
     public Parent getParentById(String id) {
         return parentDao.getParentById(id);
     }
-
 
     @Override
     public Parent getParentByEmail(String email) {

@@ -26,8 +26,7 @@ public class Child extends ApplicationUser implements Serializable {
     private List<Task> tasks;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(name = "parent_child", joinColumns = {@JoinColumn(name = "childId", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "parentId", referencedColumnName = "id")})
-
+    @JoinTable(name = "parent_child", joinColumns = {@JoinColumn(name = "childId")}, inverseJoinColumns = {@JoinColumn(name = "parentId", referencedColumnName = "id")})
     List<Parent>parents;
 
     public List<Parent> getParents() {

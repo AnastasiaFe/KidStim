@@ -10,19 +10,18 @@ import ua.nure.fedorenko.kidstim.service.TaskService;
 
 import java.util.List;
 
+@Transactional
 @Service
 public class TaskServiceImpl implements TaskService {
 
     @Autowired
     private TaskDao taskDao;
 
-
     @Override
     public Task getTaskById(String id) {
         return taskDao.getTaskById(id);
     }
 
-    @Transactional
     @Override
     public void addTask(Task task) {
         taskDao.addTask(task);
@@ -33,7 +32,6 @@ public class TaskServiceImpl implements TaskService {
         return taskDao.updateTask(task);
     }
 
-    @Transactional
     @Override
     public void deleteTask(Task task) {
         taskDao.deleteTask(task);

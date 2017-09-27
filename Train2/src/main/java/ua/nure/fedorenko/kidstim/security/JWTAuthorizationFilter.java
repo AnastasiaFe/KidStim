@@ -9,7 +9,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import ua.nure.fedorenko.kidstim.model.entity.ApplicationUser;
-import ua.nure.fedorenko.kidstim.model.entity.Parent;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -32,9 +31,8 @@ public class JWTAuthorizationFilter extends AbstractAuthenticationProcessingFilt
             HttpServletRequest req, HttpServletResponse res)
             throws AuthenticationException, IOException, ServletException {
         LOGGER.info("Authorization filter is working...Attempt of authentication");
-        ApplicationUser creds = new ObjectMapper()
-                .readValue(req.getInputStream(), Parent.class);
-        LOGGER.debug("Credentials: " + creds);
+        ApplicationUser creds = new ObjectMapper().readValue(req.getInputStream(), ApplicationUser.class);
+        System.out.println(creds.getPassword());
         return getAuthenticationManager().authenticate(
                 new UsernamePasswordAuthenticationToken(
                         creds.getEmail(),
@@ -50,7 +48,6 @@ public class JWTAuthorizationFilter extends AbstractAuthenticationProcessingFilt
             HttpServletResponse res, FilterChain chain,
             Authentication auth) throws IOException, ServletException {
         LOGGER.info("Authentication is successful");
-        TokenAuthenticationService
-                .addAuthentication(res, auth.getName());
+        TokenAuthenticationService.addAuthentication(res, auth.getName());
     }
 }

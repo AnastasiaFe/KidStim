@@ -2,14 +2,12 @@ package ua.nure.fedorenko.kidstim.security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.apache.log4j.Logger;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
-
 
 import static java.util.Collections.emptyList;
 
@@ -27,7 +25,6 @@ class TokenAuthenticationService {
     public static Authentication getAuthentication(HttpServletRequest request) {
         String token = request.getHeader(SecurityConstants.HEADER_STRING);
         if (token != null) {
-            // parse the token.
             String user = Jwts.parser()
                     .setSigningKey(SecurityConstants.SECRET)
                     .parseClaimsJws(token.replace(SecurityConstants.TOKEN_PREFIX, ""))

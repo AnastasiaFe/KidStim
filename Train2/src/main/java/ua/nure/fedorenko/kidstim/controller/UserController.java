@@ -16,10 +16,6 @@ public class UserController {
     @RequestMapping("/users")
     public @ResponseBody
     String getUsers() {
-        Parent parent = new Parent();
-        parent.setEmail("ggg@nure.ua");
-        parent.setPassword("123456");
-        parentService.addParent(parent);
         return "{\"users\":[{\"firstname\":\"Richard\", \"lastname\":\"Feynman\"}," +
                 "{\"firstname\":\"Marie\",\"lastname\":\"Curie\"}]}";
     }

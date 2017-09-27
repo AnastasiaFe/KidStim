@@ -6,39 +6,33 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import ua.nure.fedorenko.kidstim.model.dao.ChildDao;
-import ua.nure.fedorenko.kidstim.model.dao.ParentDao;
-import ua.nure.fedorenko.kidstim.model.entity.Child;
-import ua.nure.fedorenko.kidstim.model.entity.Parent;
+import ua.nure.fedorenko.kidstim.model.entity.ApplicationUser;
+import ua.nure.fedorenko.kidstim.service.ChildService;
+import ua.nure.fedorenko.kidstim.service.ParentService;
 
 import java.util.Collections;
 
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private static final Logger LOGGER = Logger.getLogger(UserDetailsServiceImpl.class);
-    @Autowired
-    private ParentDao parentDao;
 
     @Autowired
-    private ChildDao childDao;
+    private ParentService parentService;
+
+    @Autowired
+    private ChildService childService;
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         LOGGER.info("Load user by username is working...");
-        LOGGER.info(s);
-        Parent parent = parentDao.getParentByEmail(s);
-        LOGGER.info(parent);
-        if (parent == null) {
-            LOGGER.info("Parent is null");
-            Child child = childDao.getChildByEmail(s);
-            if (child == null) {
-                LOGGER.info("Child is null");
+        ApplicationUser user = parentService.getParentByEmail(s);
+        if (user == null) {
+            user = childService.getChildByEmail(s);
+            if (user == null) {
+                LOGGER.info("User not found!");
                 throw new UsernameNotFoundException(s);
-            } else {
-                return new User(child.getEmail(), child.getPassword(), Collections.emptyList());
             }
         }
-        LOGGER.info("PArent: " + parent.getEmail());
-        return new User(parent.getEmail(), parent.getPassword(), Collections.emptyList());
+        return new User(user.getEmail(), user.getPassword(), Collections.emptyList());
     }
 }

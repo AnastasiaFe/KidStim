@@ -1,6 +1,7 @@
 package ua.nure.fedorenko.kidstim.model.dao.impl;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import ua.nure.fedorenko.kidstim.model.dao.ChildDao;
 import ua.nure.fedorenko.kidstim.model.entity.Child;
@@ -8,11 +9,8 @@ import ua.nure.fedorenko.kidstim.model.entity.Child;
 public class ChildDaoImpl implements ChildDao {
 
 
+    @Autowired
     private SessionFactory sessionFactory;
-
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 
     @Override
     public Child getChildById(String id) {
@@ -21,7 +19,12 @@ public class ChildDaoImpl implements ChildDao {
 
     @Override
     public Child getChildByEmail(String email) {
-        return sessionFactory.getCurrentSession().get(Child.class, email);
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM Child where email=:email");
+        query.setParameter("email", email);
+        if (query.getResultList().size() != 0) {
+            return (Child) query.getResultList().get(0);
+        }
+        return null;
     }
 
     @Override

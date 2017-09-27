@@ -13,14 +13,10 @@ import java.util.List;
 
 @Repository
 public class ParentDaoImpl implements ParentDao {
-    private static final Logger LOGGER=Logger.getLogger(ParentDaoImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(ParentDaoImpl.class);
 
-
+    @Autowired
     private SessionFactory sessionFactory;
-
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 
     @Override
     public void addParent(Parent parent) {
@@ -35,10 +31,12 @@ public class ParentDaoImpl implements ParentDao {
 
     @Override
     public Parent getParentByEmail(String email) {
-        LOGGER.info("Get parent by email is working");
-        Parent parent=sessionFactory.getCurrentSession().get(Parent.class, email);
-        LOGGER.info(parent);
-        return parent;
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM Parent p where email=:email");
+        query.setParameter("email", email);
+        if (query.getResultList().size() != 0) {
+            return (Parent) query.getResultList().get(0);
+        }
+        return null;
     }
 
     @Override
@@ -50,7 +48,7 @@ public class ParentDaoImpl implements ParentDao {
     @Override
     public List<Parent> getParentsByChild(Child child) {
         Query query = sessionFactory.getCurrentSession().createQuery("FROM Parent p join p.children c where c.id=:id");
-        query.setParameter("id",child.getId());
-        return (List< Parent>)query.getResultList();
+        query.setParameter("id", child.getId());
+        return (List<Parent>) query.getResultList();
     }
 }

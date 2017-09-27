@@ -64,19 +64,6 @@ public class Reward implements Serializable {
         return points;
     }
 
-    public Reward(String description, int points, RewardStatus status, Parent parent) {
-        this.description = description;
-        this.points = points;
-        this.status = status;
-        this.parent = parent;
-    }
-
-    public Reward(String id, String description, int points, RewardStatus status, Parent parent) {
-
-        this(description, points, status, parent);
-        this.id = id;
-    }
-
     public void setPoints(int points) {
         this.points = points;
 

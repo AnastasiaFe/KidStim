@@ -12,7 +12,8 @@ public class Parent extends ApplicationUser implements Serializable {
 
     }
 
-    @ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST,CascadeType.REFRESH}, mappedBy = "parents")
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
+    @JoinTable(name = "parent_child", joinColumns = {@JoinColumn(name = "parentId")}, inverseJoinColumns = {@JoinColumn(name = "childId")})
     private List<Child> children;
 
     public List<Child> getChildren() {

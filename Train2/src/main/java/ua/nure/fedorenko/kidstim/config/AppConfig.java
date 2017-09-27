@@ -28,13 +28,13 @@ public class AppConfig {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan(new String[] { "ua.nure.fedorenko.kidstim.model.entity" });
+        sessionFactory.setPackagesToScan("ua.nure.fedorenko.kidstim.model.entity");
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
     }
 
     @Bean
-    public DataSource dataSource() {
+    private DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(environment.getRequiredProperty("database.driver"));
         dataSource.setUrl(environment.getRequiredProperty("database.url"));

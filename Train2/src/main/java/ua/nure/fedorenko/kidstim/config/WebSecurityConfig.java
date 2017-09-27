@@ -29,10 +29,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(org.springframework.http.HttpMethod.POST, "/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                // We filter the api/login requests
                 .addFilterBefore(new JWTAuthorizationFilter("/login", authenticationManager()),
                         UsernamePasswordAuthenticationFilter.class)
-                // And filter other requests to check the presence of JWT in header
                 .addFilterBefore(new JWTAuthenticationFilter(),
                         UsernamePasswordAuthenticationFilter.class);
     }
