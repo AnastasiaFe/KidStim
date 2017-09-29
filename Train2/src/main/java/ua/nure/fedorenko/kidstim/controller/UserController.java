@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 import ua.nure.fedorenko.kidstim.model.entity.Parent;
 import ua.nure.fedorenko.kidstim.service.ParentService;
 
@@ -18,5 +19,10 @@ public class UserController {
     String getUsers() {
         return "{\"users\":[{\"firstname\":\"Richard\", \"lastname\":\"Feynman\"}," +
                 "{\"firstname\":\"Marie\",\"lastname\":\"Curie\"}]}";
+    }
+
+    @RequestMapping("/")
+    public ModelAndView showLoginPage() {
+        return new ModelAndView("login");
     }
 }

@@ -31,9 +31,11 @@ class TokenAuthenticationService {
                     .getBody()
                     .getSubject();
 
-            return user != null ?
-                    new UsernamePasswordAuthenticationToken(user, null, emptyList()) :
-                    null;
+            if (user != null) {
+                return new UsernamePasswordAuthenticationToken(user, null, emptyList());
+            } else {
+                return null;
+            }
         }
         return null;
     }
