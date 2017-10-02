@@ -48,6 +48,8 @@ public class JWTAuthorizationFilter extends AbstractAuthenticationProcessingFilt
             HttpServletResponse res, FilterChain chain,
             Authentication auth) throws IOException, ServletException {
         LOGGER.info("Authentication is successful");
+        res.addHeader("User", auth.getName() + ";" + auth.getAuthorities().iterator().next().toString());
+        System.out.println(res.getHeader("User"));
         TokenAuthenticationService.addAuthentication(res, auth.getName());
     }
 }

@@ -2,6 +2,8 @@ package ua.nure.fedorenko.kidstim.service;
 
 import ua.nure.fedorenko.kidstim.model.entity.Reward;
 
+import java.util.List;
+
 public interface RewardService {
 
     Reward getRewardById(String id);
@@ -11,6 +13,8 @@ public interface RewardService {
     Reward updateReward(Reward reward);
 
     void deleteReward(Reward reward);
+
+    List<Reward>getRewardsByParent(String parent);
 
 
 }

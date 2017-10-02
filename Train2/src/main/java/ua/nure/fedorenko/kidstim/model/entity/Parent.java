@@ -1,5 +1,7 @@
 package ua.nure.fedorenko.kidstim.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -11,7 +13,7 @@ public class Parent extends ApplicationUser implements Serializable {
     public Parent() {
 
     }
-
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
     @JoinTable(name = "parent_child", joinColumns = {@JoinColumn(name = "parentId")}, inverseJoinColumns = {@JoinColumn(name = "childId")})
     private List<Child> children;

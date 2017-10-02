@@ -1,22 +1,62 @@
-<!DOCTYPE HTML>
-<html>
-    <head>
-        <title>Kidstim</title>
-        <script src="js/angular.min.js"></script>
 
-    </head>
-    <body>
-        <div class="container" ng-app="app">
-            <div ng-controller="loginController">
-                <form name="loginForm" ng-submit="login()">
-                    <label>Email</label>
-                    <input type="text" name="email" ng-model="email"/>
-                    <input type="password" name="password" ng-model="password"/>
-                    <button type="submit">Sign in</button>
-                </form>
-                <p>{{message}}</p>
-            </div>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Kidstim</title>
+
+
+
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/angular.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+</head>
+
+<body>
+<div class="container">
+    <div class="top">
+        <h1 id="title" class="hidden"><span id="logo">Daily <span>UI</span></span></h1>
+    </div>
+    <div class="login-box animated fadeInUp" ng-app="app">
+        <div class="box-header">
+            <h2>Log In</h2>
         </div>
-        <script src="js/LoginController.js"></script>
-    </body>
+        <form name="loginForm" ng-submit="login()">
+        <label for="email">Email</label>
+        <br/>
+        <input type="text" id="email" name="email">
+        <br/>
+        <label for="password">Password</label>
+        <br/>
+        <input type="password" id="password" name="password">
+        <br/>
+        <button type="submit">Sign In</button>
+        </form>
+        <br/>
+        <a href="#"><p class="small">Register</p></a>
+    </div>
+</div>
+</body>
+<script src="js/LoginController.js"></script>
+<script>
+	$(document).ready(function () {
+    	$('#logo').addClass('animated fadeInDown');
+    	$("input:text:visible:first").focus();
+	});
+	$('#username').focus(function() {
+		$('label[for="username"]').addClass('selected');
+	});
+	$('#username').blur(function() {
+		$('label[for="username"]').removeClass('selected');
+	});
+	$('#password').focus(function() {
+		$('label[for="password"]').addClass('selected');
+	});
+	$('#password').blur(function() {
+		$('label[for="password"]').removeClass('selected');
+	});
+</script>
+
 </html>

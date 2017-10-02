@@ -1,5 +1,5 @@
 var app=angular.module('app',[]);
-app.controller('loginController',function($scope,$http,$location){
+app.controller('loginController',function($scope,$http,$location,$window){
     $scope.login=function(){
         var url="login";
         var data={
@@ -9,23 +9,20 @@ password:$scope.password
 
         $http.post(url,data).then(function(response)
     {
-        $scope.message="Successful!"+response.headers("Authorization");
+    var userHeader=response.headers('User');
+        var userLogin=userHeader.split(';')[0];
+        var userRole=userHeader.split(';')[1];
+
+        if(userRole=='parent')
+        {
+$window.location.href=$location.absoluteUrl()+"ana.html";
+
+       }
+
+
     }, function(response){
 
         $scope.message="Failed!";
     });
     }
 });
-angular.module('app').factory('httpRequestInterceptor',
-['$rootScope', function($rootScope)
- {
-  return {
-   request: function($config) {
-    if( $rootScope.user.loginticket )
-    {
-     $config.headers['your-auth-ticket'] = $rootScope.user.loginticket;
-    }
-  return $config;
-  }
- };
-}]);

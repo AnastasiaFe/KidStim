@@ -1,18 +1,20 @@
 package ua.nure.fedorenko.kidstim.model.dao.impl;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import ua.nure.fedorenko.kidstim.model.dao.RewardDao;
 import ua.nure.fedorenko.kidstim.model.entity.Reward;
 
+import java.util.List;
+
 public class RewardDaoImpl implements RewardDao {
 
 
+    @Autowired
     private SessionFactory sessionFactory;
 
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
+
 
     @Override
     public Reward getRewardById(String id) {
@@ -33,5 +35,12 @@ public class RewardDaoImpl implements RewardDao {
     @Override
     public void deleteReward(Reward reward) {
         sessionFactory.getCurrentSession().delete(Reward.class);
+    }
+
+    @Override
+    public List<Reward> getRewardsByParent(String parent) {
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM Reward where parent.id=:id");
+        query.setParameter("id", parent);
+        return query.getResultList();
     }
 }

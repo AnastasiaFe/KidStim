@@ -1,5 +1,6 @@
 package ua.nure.fedorenko.kidstim.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -26,11 +27,14 @@ public class Reward implements Serializable {
     @Column(name = "status")
     private RewardStatus status;
 
+
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "child_reward", joinColumns = {@JoinColumn(name = "rewardId")}, inverseJoinColumns = {@JoinColumn(name = "childId")})
     private List<Child> children;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "parent")
     private Parent parent;
 

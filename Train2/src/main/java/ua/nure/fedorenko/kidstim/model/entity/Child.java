@@ -1,5 +1,9 @@
 package ua.nure.fedorenko.kidstim.model.entity;
 
+
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -22,9 +26,12 @@ public class Child extends ApplicationUser implements Serializable {
     @Column(name = "points")
     private int points;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST,CascadeType.REFRESH}, mappedBy = "children")
     private List<Task> tasks;
 
+
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "parent_child", joinColumns = {@JoinColumn(name = "childId")}, inverseJoinColumns = {@JoinColumn(name = "parentId", referencedColumnName = "id")})
     List<Parent>parents;
@@ -37,6 +44,8 @@ public class Child extends ApplicationUser implements Serializable {
         this.parents = parents;
     }
 
+
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.REMOVE}, mappedBy = "children")
     private List<Reward> rewards;
 

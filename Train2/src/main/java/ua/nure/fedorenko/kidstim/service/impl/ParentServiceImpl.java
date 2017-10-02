@@ -10,8 +10,8 @@ import ua.nure.fedorenko.kidstim.service.ParentService;
 
 import java.util.ArrayList;
 
-@Transactional
 @Service
+@Transactional
 public class ParentServiceImpl implements ParentService {
 
     @Autowired
