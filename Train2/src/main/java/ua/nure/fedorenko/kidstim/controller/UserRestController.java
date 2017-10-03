@@ -12,6 +12,8 @@ import ua.nure.fedorenko.kidstim.model.entity.Parent;
 import ua.nure.fedorenko.kidstim.service.ChildService;
 import ua.nure.fedorenko.kidstim.service.ParentService;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.lang.invoke.MethodType;
 
 @RestController
@@ -27,13 +29,13 @@ public class UserRestController {
 
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<Parent> register(@RequestBody Parent parent) {
+    public ResponseEntity<Parent> register(@Valid @RequestBody Parent parent) {
         parentService.addParent(parent);
         return new ResponseEntity<>(parent, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/updateParent", method = RequestMethod.PUT)
-    public ResponseEntity<Parent> updateParent(@RequestBody Parent parent) {
+    public ResponseEntity<Parent> updateParent(@Valid @RequestBody Parent parent) {
         Parent updatedParent = parentService.updateParent(parent);
         if (updatedParent == null) {
             return new ResponseEntity<>(parent, HttpStatus.NOT_FOUND);
@@ -42,7 +44,7 @@ public class UserRestController {
     }
 
     @RequestMapping(value = "/updateChild", method = RequestMethod.PUT)
-    public ResponseEntity<Child> updateChild(@RequestBody Child child) {
+    public ResponseEntity<Child> updateChild(@Valid @RequestBody Child child) {
         Child updatedChild = childService.updateChild(child);
         if (updatedChild == null) {
             return new ResponseEntity<>(child, HttpStatus.NOT_FOUND);
@@ -51,7 +53,7 @@ public class UserRestController {
     }
 
     @RequestMapping(value = "/addChild", method = RequestMethod.POST)
-    public ResponseEntity<Child> addChild(@RequestBody Child child) {
+    public ResponseEntity<Child> addChild(@Valid @RequestBody Child child) {
         childService.addChild(child);
         return new ResponseEntity<>(child, HttpStatus.CREATED);
     }
@@ -64,8 +66,7 @@ public class UserRestController {
 
 
     @RequestMapping(value = "/parent", method = RequestMethod.GET)
-    public ResponseEntity getParentById(@RequestParam("id") String id) {
-        System.out.println("I'm working");
+    public ResponseEntity getParentById(@NotNull @RequestParam("id") String id) {
         Parent parent = parentService.getParentById(id);
         if (parent == null) {
             return new ResponseEntity("No parent found for ID " + id, HttpStatus.NOT_FOUND);
@@ -74,7 +75,7 @@ public class UserRestController {
     }
 
     @RequestMapping(value = "/child", method = RequestMethod.GET)
-    public ResponseEntity getChildById(@RequestParam("id") String id) {
+    public ResponseEntity getChildById(@NotNull @RequestParam("id") String id) {
         Child child = childService.getChildById(id);
         if (child == null) {
             return new ResponseEntity("No child found for ID " + id, HttpStatus.NOT_FOUND);

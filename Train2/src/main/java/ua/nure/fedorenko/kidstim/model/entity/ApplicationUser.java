@@ -6,10 +6,13 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @MappedSuperclass
-public class ApplicationUser implements Serializable{
+public class ApplicationUser implements Serializable {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid")
@@ -17,9 +20,13 @@ public class ApplicationUser implements Serializable{
     private String id;
 
     @Column(name = "email")
+    @NotNull
+    @Email
     private String email;
 
     @Column(name = "password")
+    @NotNull
+    @Size(min = 6)
     private String password;
 
     @Column(name = "name")

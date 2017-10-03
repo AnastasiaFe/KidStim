@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ua.nure.fedorenko.kidstim.model.entity.Task;
 import ua.nure.fedorenko.kidstim.service.TaskService;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
@@ -38,7 +39,7 @@ public class TaskRestController {
 
 
     @RequestMapping(value = "/task", method = RequestMethod.GET)
-    public ResponseEntity getTaskById(@RequestParam("id") String id) {
+    public ResponseEntity getTaskById(@NotNull @RequestParam("id") String id) {
         Task task = taskService.getTaskById(id);
         if (task == null) {
             return new ResponseEntity("No task found for ID " + id, HttpStatus.NOT_FOUND);
@@ -47,7 +48,7 @@ public class TaskRestController {
     }
 
     @RequestMapping(value = "/tasksByParent", method = RequestMethod.GET)
-    public ResponseEntity<List<Task>> getTasksByParent(@RequestParam("id") String parentId) {
+    public ResponseEntity<List<Task>> getTasksByParent(@NotNull @RequestParam("id") String parentId) {
         List<Task> tasks = taskService.getTasksByParent(parentId);
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }

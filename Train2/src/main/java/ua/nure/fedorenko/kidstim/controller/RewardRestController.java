@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ua.nure.fedorenko.kidstim.model.entity.Reward;
 import ua.nure.fedorenko.kidstim.service.RewardService;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
@@ -38,7 +39,7 @@ public class RewardRestController {
 
 
     @RequestMapping(value = "/reward", method = RequestMethod.GET)
-    public ResponseEntity getRewardById(@RequestParam("id") String id) {
+    public ResponseEntity getRewardById(@NotNull @RequestParam("id") String id) {
         Reward reward = rewardService.getRewardById(id);
         if (reward == null) {
             return new ResponseEntity("No reward found for ID " + id, HttpStatus.NOT_FOUND);
@@ -47,7 +48,7 @@ public class RewardRestController {
     }
 
     @RequestMapping(value = "/rewardsByParent", method = RequestMethod.GET)
-    public ResponseEntity<List<Reward>> getRewardsByParent(@RequestParam("id") String parentId) {
+    public ResponseEntity<List<Reward>> getRewardsByParent(@NotNull @RequestParam("id") String parentId) {
         List<Reward> rewards = rewardService.getRewardsByParent(parentId);
         return new ResponseEntity<>(rewards, HttpStatus.OK);
     }
