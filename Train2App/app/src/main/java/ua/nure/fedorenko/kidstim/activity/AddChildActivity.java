@@ -1,11 +1,15 @@
 package ua.nure.fedorenko.kidstim.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.widget.Button;
@@ -13,6 +17,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +31,7 @@ import rx.SingleSubscriber;
 import rx.Subscription;
 import ua.nure.fedorenko.kidstim.entity.ChildDTO;
 import ua.nure.fedorenko.kidstim.entity.ParentDTO;
+import ua.nure.fedorenko.kidstim.rest.APIService;
 import ua.nure.fedorenko.kidstim.rest.APIServiceImpl;
 import ua.nure.fedorenko.kidstim.utils.ImageUtils;
 import ua.nure.fedorenko.kidstim.utils.Validator;
@@ -80,20 +86,7 @@ public class AddChildActivity extends BaseActivity {
         birthDate = Calendar.getInstance();
         apiService = new APIServiceImpl(this);
         String parentEmail = getSharedPreferences("MyPrefs", MODE_PRIVATE).getString("User", "");
-        Single<ParentDTO> parentSingle = apiService.getParentByEmail(parentEmail);
-        SingleSubscriber<ParentDTO> subscriber = new SingleSubscriber<ParentDTO>() {
-            @Override
-            public void onSuccess(ParentDTO value) {
-                parent = value;
-
-            }
-
-            @Override
-            public void onError(Throwable error) {
-
-            }
-        };
-        parentSingle.subscribe(subscriber);
+        getParentByEmail(parentEmail);
 
     }
 
@@ -115,44 +108,32 @@ public class AddChildActivity extends BaseActivity {
                     child.setGender(1);
                     break;
             }
-            File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/images" + "/" + child.getName() + ".png");
-            child.setPhoto(path.getPath());
-            try {
-                ImageUtils.saveImageToExternal(child.getName(), ImageUtils.decodeFile(filePath));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            // File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + "/images" + "/" + child.getName() + ".png");
+            child.setPhoto(child.getEmail()+".png");
             child.setDateOfBirth(birthDate.getTimeInMillis());
-            parent.getChildren().add(child);
-            Completable comp = apiService.updateParent(parent);
-            Completable.CompletableSubscriber subs = new Completable.CompletableSubscriber() {
-                @Override
-                public void onCompleted() {
-                    finish();
-                }
-
-                @Override
-                public void onError(Throwable e) {
-
-                }
-
-                @Override
-                public void onSubscribe(Subscription d) {
-
-                }
-            };
-            comp.subscribe(subs);
+            updateParent(child);
         }
     }
-
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PICK_IMAGE_FROM_GALLERY_CODE && resultCode == RESULT_OK && null != data) {
-            filePath = ImageUtils.getPath(data, this);
+            Uri uri = data.getData();
+            filePath = getRealPathFromURIPath(uri, AddChildActivity.this);
             Bitmap bitmap = ImageUtils.decodeFile(filePath);
             uploadedImageView.setImageBitmap(bitmap);
+        }
+    }
+
+    private String getRealPathFromURIPath(Uri contentURI, Activity activity) {
+        Cursor cursor = activity.getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) {
+            return contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            return cursor.getString(idx);
         }
     }
 
@@ -164,6 +145,62 @@ public class AddChildActivity extends BaseActivity {
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_FROM_GALLERY_CODE);
     }
 
+    private void updateParent(ChildDTO child) {
+        parent.getChildren().add(child);
+        Completable comp = apiService.updateParent(parent);
+        Completable.CompletableSubscriber subs = new Completable.CompletableSubscriber() {
+            @Override
+            public void onCompleted() {
+                APIServiceImpl apiService = new APIServiceImpl(AddChildActivity.this);
+                Completable completable = apiService.uploadImage(new File(filePath), child.getEmail() + ".png");
+                Completable.CompletableSubscriber subscriber = new Completable.CompletableSubscriber() {
+                    @Override
+                    public void onCompleted() {
+                        Toast.makeText(AddChildActivity.this, "Image upload", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onSubscribe(Subscription d) {
+
+                    }
+                };
+                completable.subscribe(subscriber);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onSubscribe(Subscription d) {
+
+            }
+        };
+        comp.subscribe(subs);
+    }
+
+    private void getParentByEmail(String parentEmail) {
+        Single<ParentDTO> parentSingle = apiService.getParentByEmail(parentEmail);
+        SingleSubscriber<ParentDTO> subscriber = new SingleSubscriber<ParentDTO>() {
+            @Override
+            public void onSuccess(ParentDTO value) {
+                parent = value;
+
+            }
+
+            @Override
+            public void onError(Throwable error) {
+
+            }
+        };
+        parentSingle.subscribe(subscriber);
+    }
 
     private boolean isInputValid() {
         String email = emailEditText.getText().toString();

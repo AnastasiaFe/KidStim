@@ -24,10 +24,7 @@ public class ParentMainActivity extends BaseActivity {
 
     @BindView(R.id.childrenRecycleView)
     RecyclerView childrenRecycleView;
-
     private List<ChildDTO> children;
-    private ParentDTO parent;
-    private APIServiceImpl apiService;
 
 
     @Override
@@ -36,14 +33,13 @@ public class ParentMainActivity extends BaseActivity {
         setContentView(R.layout.activity_parent_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        apiService = new APIServiceImpl(this);
+        APIServiceImpl apiService = new APIServiceImpl(this);
         String parentEmail = getSharedPreferences("MyPrefs", MODE_PRIVATE).getString("User", "");
         Single<ParentDTO> parentSingle = apiService.getParentByEmail(parentEmail);
         SingleSubscriber<ParentDTO> subscriber = new SingleSubscriber<ParentDTO>() {
             @Override
             public void onSuccess(ParentDTO value) {
-                parent = value;
-                getSharedPreferences("MyPrefs", MODE_PRIVATE).edit().putString("Id", parent.getId()).apply();
+                getSharedPreferences("MyPrefs", MODE_PRIVATE).edit().putString("Id", value.getId()).apply();
                 children = value.getChildren();
                 ChildAdapter adapter = new ChildAdapter(children, getBaseContext());
                 childrenRecycleView.setAdapter(adapter);
@@ -69,7 +65,6 @@ public class ParentMainActivity extends BaseActivity {
         return true;
     }
 
-    // TODO: 10/13/2017 process menu items clicking
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -77,7 +72,7 @@ public class ParentMainActivity extends BaseActivity {
                 startActivity(new Intent(ParentMainActivity.this, ParentTasksActivity.class));
                 return true;
             case R.id.rewardsMenuItem:
-                //
+                startActivity(new Intent(ParentMainActivity.this, ParentRewardsActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

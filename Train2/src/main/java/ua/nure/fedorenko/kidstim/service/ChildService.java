@@ -1,22 +1,20 @@
 package ua.nure.fedorenko.kidstim.service;
 
-import ua.nure.fedorenko.kidstim.model.entity.Child;
+import ua.nure.fedorenko.kidstim.service.dto.ChildDTO;
 
 public interface ChildService {
 
-    void addChild(Child child);
+    void addChild(ChildDTO child);
 
-    void deleteChild(Child child);
+    ChildDTO getChildById(String id);
 
-    Child getChildById(String id);
+    ChildDTO getChildByEmail(String email);
 
-    Child getChildByEmail(String email);
+    ChildDTO minusPoints(ChildDTO child, int numberOfPoints);
 
-    Child minusPoints(Child child, int numberOfPoints);
+    ChildDTO plusPoints(ChildDTO child, int numberOfPoints);
 
-    Child plusPoints(Child child, int numberOfPoints);
-
-    Child updateChild(Child child);
+    ChildDTO updateChild(ChildDTO child);
 
 
 }

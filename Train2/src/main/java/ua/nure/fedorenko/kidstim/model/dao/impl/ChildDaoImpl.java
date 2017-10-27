@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ua.nure.fedorenko.kidstim.model.dao.ChildDao;
 import ua.nure.fedorenko.kidstim.model.entity.Child;
 
+import java.util.List;
+
 public class ChildDaoImpl implements ChildDao {
 
 
@@ -42,4 +44,6 @@ public class ChildDaoImpl implements ChildDao {
     public void deleteChild(Child child) {
         sessionFactory.getCurrentSession().delete(child);
     }
+
+
 }

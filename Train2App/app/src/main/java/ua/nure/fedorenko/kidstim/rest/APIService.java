@@ -2,12 +2,16 @@ package ua.nure.fedorenko.kidstim.rest;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 import rx.Completable;
 import rx.Observable;
@@ -56,6 +60,9 @@ public interface APIService {
     @GET("tasksByParent")
     Single<List<TaskDTO>> getTasksByParent(@Query("id") String id);
 
+    @GET("rewardsByParent")
+    Single<List<RewardDTO>> getRewardsByParent(@Query("id") String id);
+
     @PUT("minusPoints")
     Observable<ChildDTO> minusPoints(@Body ChildDTO child, @Query("points") int points);
 
@@ -63,28 +70,35 @@ public interface APIService {
     Observable<ChildDTO> plusPoints(@Body ChildDTO child, @Query("points") int points);
 
     @PUT("updateReward")
-    Observable<RewardDTO> updateReward(@Body RewardDTO reward);
+    Completable updateReward(@Body RewardDTO reward);
+
+    @Multipart
+    @POST("uploadImage")
+    Completable uploadImage(@Part MultipartBody.Part image, @Query("name")String name);
+
+    @GET("getImage")
+    Single<Byte[]> getImage(@Query("name") String name);
 
     @POST("addReward")
-    Observable<RewardDTO> addReward(@Body RewardDTO reward);
+    Completable addReward(@Body RewardDTO reward);
 
     @DELETE("deleteReward")
-    Observable<RewardDTO> deleteReward(@Body RewardDTO reward);
+    Completable deleteReward(@Query("id") String id);
 
     @GET("reward")
-    Observable<RewardDTO> getRewardById(@Query("id") String id);
+    Single<RewardDTO> getRewardById(@Query("id") String id);
 
 
     @PUT("updateTask")
-    Observable<TaskDTO> updateTask(@Body TaskDTO task);
+    Completable updateTask(@Body TaskDTO task);
 
     @POST("addTask")
-    Observable<TaskDTO> addTask(@Body TaskDTO task);
+    Completable addTask(@Body TaskDTO task);
 
     @DELETE("deleteTask")
-    Observable<TaskDTO> deleteTask(@Body TaskDTO task);
+    Completable deleteTask(@Query("id") String id);
 
     @GET("task")
-    Observable<TaskDTO> getTaskById(@Query("id") String id);
+    Single<TaskDTO> getTaskById(@Query("id") String id);
 
 }

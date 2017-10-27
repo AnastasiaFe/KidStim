@@ -1,5 +1,6 @@
 package ua.nure.fedorenko.kidstim.model.dao.impl;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ public class RewardDaoImpl implements RewardDao {
 
     @Autowired
     private SessionFactory sessionFactory;
-
 
 
     @Override
@@ -34,7 +34,9 @@ public class RewardDaoImpl implements RewardDao {
 
     @Override
     public void deleteReward(Reward reward) {
-        sessionFactory.getCurrentSession().delete(Reward.class);
+        Session session = sessionFactory.getCurrentSession();
+        Object findAAgain = session.merge(reward);
+        session.delete(findAAgain);
     }
 
     @Override

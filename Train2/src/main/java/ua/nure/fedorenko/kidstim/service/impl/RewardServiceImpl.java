@@ -6,7 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.nure.fedorenko.kidstim.model.dao.RewardDao;
 import ua.nure.fedorenko.kidstim.model.entity.Reward;
 import ua.nure.fedorenko.kidstim.service.RewardService;
+import ua.nure.fedorenko.kidstim.service.dto.RewardDTO;
+import ua.nure.fedorenko.kidstim.service.mapper.RewardMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Transactional
@@ -16,28 +19,36 @@ public class RewardServiceImpl implements RewardService {
     @Autowired
     private RewardDao rewardDao;
 
+    @Autowired
+    private RewardMapper rewardMapper;
+
     @Override
-    public Reward getRewardById(String id) {
-        return rewardDao.getRewardById(id);
+    public RewardDTO getRewardById(String id) {
+        return rewardMapper.getRewardDTO(rewardDao.getRewardById(id));
     }
 
     @Override
-    public void addReward(Reward reward) {
-        rewardDao.addReward(reward);
+    public void addReward(RewardDTO reward) {
+        rewardDao.addReward(rewardMapper.getReward(reward));
     }
 
     @Override
-    public Reward updateReward(Reward reward) {
-        return rewardDao.updateReward(reward);
+    public RewardDTO updateReward(RewardDTO reward) {
+        return rewardMapper.getRewardDTO(rewardDao.updateReward(rewardMapper.getReward(reward)));
     }
 
     @Override
-    public void deleteReward(Reward reward) {
-        rewardDao.deleteReward(reward);
+    public void deleteReward(String id) {
+        RewardDTO reward = getRewardById(id);
+        rewardDao.deleteReward(rewardMapper.getReward(reward));
     }
 
     @Override
-    public List<Reward> getRewardsByParent(String parent) {
-        return rewardDao.getRewardsByParent(parent);
+    public List<RewardDTO> getRewardsByParent(String parent) {
+        List<RewardDTO> rewards = new ArrayList<>();
+        for (Reward reward : rewardDao.getRewardsByParent(parent)) {
+            rewards.add(rewardMapper.getRewardDTO(reward));
+        }
+        return rewards;
     }
 }

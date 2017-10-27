@@ -8,6 +8,8 @@ import ua.nure.fedorenko.kidstim.model.dao.ChildDao;
 import ua.nure.fedorenko.kidstim.model.dao.ParentDao;
 import ua.nure.fedorenko.kidstim.model.entity.Child;
 import ua.nure.fedorenko.kidstim.service.ChildService;
+import ua.nure.fedorenko.kidstim.service.dto.ChildDTO;
+import ua.nure.fedorenko.kidstim.service.mapper.ChildMapper;
 
 import java.util.ArrayList;
 
@@ -22,49 +24,43 @@ public class ChildServiceImpl implements ChildService {
     private ParentDao parentDao;
 
     @Autowired
+    private ChildMapper childMapper;
+
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public void addChild(Child child) {
+    public void addChild(ChildDTO child) {
         child.setPassword(bCryptPasswordEncoder.encode(child.getPassword()));
-        childDao.addChild(child);
+        childDao.addChild(childMapper.getChild(child));
     }
 
     @Override
-    public void deleteChild(Child child) {
-        parentDao.getParentsByChild(child).forEach(e -> e.getChildren().remove(child));
-        child.getTasks().forEach(e -> e.getChildren().remove(child));
-        child.getRewards().forEach(e -> e.getChildren().remove(child));
-        childDao.deleteChild(child);
+    public ChildDTO getChildById(String id) {
+        return childMapper.getChildDTO(childDao.getChildById(id));
     }
 
     @Override
-    public Child getChildById(String id) {
-        return childDao.getChildById(id);
-    }
-
-
-    @Override
-    public Child getChildByEmail(String email) {
-        return childDao.getChildByEmail(email);
+    public ChildDTO getChildByEmail(String email) {
+        return childMapper.getChildDTO(childDao.getChildByEmail(email));
     }
 
     @Override
-    public Child minusPoints(Child child, int numberOfPoints) {
+    public ChildDTO minusPoints(ChildDTO child, int numberOfPoints) {
         int newPoints = child.getPoints() - numberOfPoints;
         child.setPoints(newPoints);
-        return childDao.updateChild(child);
+        return childMapper.getChildDTO(childDao.updateChild(childMapper.getChild(child)));
     }
 
     @Override
-    public Child plusPoints(Child child, int numberOfPoints) {
+    public ChildDTO plusPoints(ChildDTO child, int numberOfPoints) {
         int newPoints = child.getPoints() + numberOfPoints;
         child.setPoints(newPoints);
-        return childDao.updateChild(child);
+        return childMapper.getChildDTO(childDao.updateChild(childMapper.getChild(child)));
     }
 
     @Override
-    public Child updateChild(Child child) {
-        return childDao.updateChild(child);
+    public ChildDTO updateChild(ChildDTO child) {
+        return childMapper.getChildDTO(childDao.updateChild(childMapper.getChild(child)));
     }
 }

@@ -30,4 +30,25 @@
     <string name="rewards">Rewards</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="image_saving_error">Error during image saving!</string>
+    <string name="description">Description</string>
+    <string name="expiration_date">Select expiration date</string>
+    <string name="error_invalid_desc">Description should not be empty</string>
+    <string name="error_invalid_points">Points should be an integer value</string>
+    <string name="ok">OK</string>
+    <string name="select_children">Select children</string>
+    <string name="task_deleting">Task deleting</string>
+    <string name="task_delete_confirmation">Are you sure you want to delete the task</string>
+    <string name="cancel">Cancel</string>
+    <string name="reward_deleting">Reward deleting</string>
+    <string name="reward_delete_confirmation">Are you sure you want to delete the reward?</string>
+    <string name="id">id</string>
+    <string name="error_reward_saving">Error during reward saving!</string>
+    <string name="error_task_saving">Error during task saving!</string>
+    <string name="error_parent_retrieving">Error during parent retrieving!</string>
+    <string name="prefs">MyPrefs</string>
+    <string name="user">User</string>
+    <string name="error_reward_retrieving">Error during reward retrieving!</string>
+    <string name="error_task_retrieving">Error during task retrieving!</string>
+    <string name="save">Save</string>
 </resources>

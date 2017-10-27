@@ -1,18 +1,19 @@
 package ua.nure.fedorenko.kidstim.service;
 
 import ua.nure.fedorenko.kidstim.model.entity.Task;
+import ua.nure.fedorenko.kidstim.service.dto.TaskDTO;
 
 import java.util.List;
 
 public interface TaskService {
 
-    Task getTaskById(String id);
+    TaskDTO getTaskById(String id);
 
-    void addTask(Task task);
+    void addTask(TaskDTO task);
 
-    Task updateTask(Task task);
+    TaskDTO updateTask(TaskDTO task);
 
-    void deleteTask(Task task);
+    void deleteTask(String id);
 
-    List<Task> getTasksByParent(String parent);
+    List<TaskDTO> getTasksByParent(String parent);
 }

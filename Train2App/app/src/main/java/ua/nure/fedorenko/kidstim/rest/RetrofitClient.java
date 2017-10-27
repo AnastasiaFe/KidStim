@@ -12,6 +12,7 @@ public class RetrofitClient {
 
     private static Retrofit retrofit = null;
     private static final String BASE_URL = "http://10.23.14.116:8080/kidstim/";
+    //private static final String BASE_URL = "http://10.0.2.2:8080/kidstim/";
     private static final String AUTHENTICATION_HEADER = "Authorization";
 
     private RetrofitClient() {

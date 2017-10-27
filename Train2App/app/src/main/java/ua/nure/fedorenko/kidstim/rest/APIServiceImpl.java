@@ -5,8 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Response;
 import rx.Completable;
 import rx.Single;
@@ -16,6 +20,7 @@ import rx.schedulers.Schedulers;
 import ua.nure.fedorenko.kidstim.activity.ParentMainActivity;
 import ua.nure.fedorenko.kidstim.entity.ChildDTO;
 import ua.nure.fedorenko.kidstim.entity.ParentDTO;
+import ua.nure.fedorenko.kidstim.entity.RewardDTO;
 import ua.nure.fedorenko.kidstim.entity.TaskDTO;
 import ua.nure.fedorenko.kidstim.entity.UserDTO;
 import ua.nure.fedorenko.train2app.R;
@@ -89,6 +94,24 @@ public class APIServiceImpl {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    public Single<TaskDTO> getTaskById(String id) {
+        return apiService.getTaskById(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Single<RewardDTO> getRewardById(String id) {
+        return apiService.getRewardById(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Single<List<RewardDTO>> getRewardsByParent(String id) {
+        return apiService.getRewardsByParent(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
     public Single<ParentDTO> getParentByEmail(String email) {
         return apiService.getParentByEmail(email)
                 .subscribeOn(Schedulers.io())
@@ -100,7 +123,52 @@ public class APIServiceImpl {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    public Completable updateTask(TaskDTO task) {
+        return apiService.updateTask(task).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 
+    public Completable updateReward(RewardDTO reward) {
+        return apiService.updateReward(reward).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Single<Byte[]> getImage(String name) {
+        return apiService.getImage(name).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Completable uploadImage(File file, String name) {
+        RequestBody requestFile =
+                RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        MultipartBody.Part body =
+                MultipartBody.Part.createFormData("file", file.getAbsolutePath(), requestFile);
+        return apiService.uploadImage(body, name)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Completable addTask(TaskDTO task) {
+        return apiService.addTask(task)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Completable addReward(RewardDTO reward) {
+        return apiService.addReward(reward)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Completable deleteTask(String id) {
+        return apiService.deleteTask(id).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Completable deleteReward(String id) {
+        return apiService.deleteReward(id).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 }
 
 

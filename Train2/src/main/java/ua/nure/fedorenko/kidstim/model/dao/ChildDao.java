@@ -2,6 +2,8 @@ package ua.nure.fedorenko.kidstim.model.dao;
 
 import ua.nure.fedorenko.kidstim.model.entity.Child;
 
+import java.util.List;
+
 public interface ChildDao {
 
     Child getChildById(String id);
@@ -13,5 +15,6 @@ public interface ChildDao {
     void addChild(Child child);
 
     void deleteChild(Child child);
+
 
 }

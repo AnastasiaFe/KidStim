@@ -14,7 +14,7 @@ public class Parent extends ApplicationUser implements Serializable {
 
     }
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinTable(name = "parent_child", joinColumns = {@JoinColumn(name = "parentId")}, inverseJoinColumns = {@JoinColumn(name = "childId")})
     private List<Child> children;
 

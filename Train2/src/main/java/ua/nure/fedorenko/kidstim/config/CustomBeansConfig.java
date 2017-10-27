@@ -13,11 +13,12 @@ import ua.nure.fedorenko.kidstim.model.dao.impl.ChildDaoImpl;
 import ua.nure.fedorenko.kidstim.model.dao.impl.ParentDaoImpl;
 import ua.nure.fedorenko.kidstim.model.dao.impl.RewardDaoImpl;
 import ua.nure.fedorenko.kidstim.model.dao.impl.TaskDaoImpl;
-import ua.nure.fedorenko.kidstim.service.ChildService;
-import ua.nure.fedorenko.kidstim.service.ParentService;
-import ua.nure.fedorenko.kidstim.service.RewardService;
-import ua.nure.fedorenko.kidstim.service.TaskService;
+import ua.nure.fedorenko.kidstim.service.*;
 import ua.nure.fedorenko.kidstim.service.impl.*;
+import ua.nure.fedorenko.kidstim.service.mapper.ChildMapper;
+import ua.nure.fedorenko.kidstim.service.mapper.ParentMapper;
+import ua.nure.fedorenko.kidstim.service.mapper.RewardMapper;
+import ua.nure.fedorenko.kidstim.service.mapper.TaskMapper;
 
 @Configuration
 @ComponentScan({"ua.nure.fedorenko.kidstim"})
@@ -61,6 +62,28 @@ public class CustomBeansConfig {
     @Bean
     public RewardService rewardService() {
         return new RewardServiceImpl();
+    }
+
+    @Bean
+    public ParentMapper parentMapper() {
+        return new ParentMapper();
+    }
+
+    @Bean
+    public ChildMapper childMapper() {
+        return new ChildMapper();
+    }
+
+
+
+    @Bean
+    public TaskMapper taskMapper() {
+        return new TaskMapper();
+    }
+
+    @Bean
+    public RewardMapper rewardMapper() {
+        return new RewardMapper();
     }
 
     @Bean

@@ -1,11 +1,11 @@
 package ua.nure.fedorenko.kidstim.model.entity;
 
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -13,9 +13,8 @@ import java.util.List;
 @Table(name = "child")
 public class Child extends ApplicationUser implements Serializable {
 
-    @Temporal(TemporalType.DATE)
     @Column(name = "dateOfBirth")
-    private Date dateOfBirth;
+    private long dateOfBirth;
 
     @Column(name = "gender")
     private int gender;
@@ -27,14 +26,13 @@ public class Child extends ApplicationUser implements Serializable {
     private int points;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST,CascadeType.REFRESH}, mappedBy = "children")
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH}, mappedBy = "children")
     private List<Task> tasks;
-
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "parent_child", joinColumns = {@JoinColumn(name = "childId")}, inverseJoinColumns = {@JoinColumn(name = "parentId", referencedColumnName = "id")})
-    List<Parent>parents;
+    List<Parent> parents;
 
     public List<Parent> getParents() {
         return parents;
@@ -46,15 +44,15 @@ public class Child extends ApplicationUser implements Serializable {
 
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.REMOVE}, mappedBy = "children")
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE}, mappedBy = "children")
     private List<Reward> rewards;
 
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    public long getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public Date getDateOfBirth() {
-        return dateOfBirth;
+    public void setDateOfBirth(long dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public int getGender() {

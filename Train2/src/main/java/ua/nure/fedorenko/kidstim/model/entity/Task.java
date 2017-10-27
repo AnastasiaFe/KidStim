@@ -21,25 +21,22 @@ public class Task implements Serializable {
     @Column(name = "description")
     private String description;
 
-
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "status")
     private TaskStatus status;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "creationDate")
-    private Date creationDate;
+    private long creationDate;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "expirationDate")
-    private Date expirationDate;
+    private long expirationDate;
 
     @Column(name = "points")
     private int points;
 
 
-    @com.fasterxml.jackson.annotation.JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinTable(name = "child_task", joinColumns = {@JoinColumn(name = "taskId", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "childId", referencedColumnName = "id")})
     private List<Child> children;
 
@@ -64,24 +61,21 @@ public class Task implements Serializable {
         this.status = status;
     }
 
-
-    public Date getCreationDate() {
+    public long getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(long creationDate) {
         this.creationDate = creationDate;
     }
 
-
-    public Date getExpirationDate() {
+    public long getExpirationDate() {
         return expirationDate;
     }
 
-    public void setExpirationDate(Date expirationDate) {
+    public void setExpirationDate(long expirationDate) {
         this.expirationDate = expirationDate;
     }
-
 
     public int getPoints() {
         return points;

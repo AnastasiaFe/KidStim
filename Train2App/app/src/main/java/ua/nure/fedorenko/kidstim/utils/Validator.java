@@ -13,4 +13,13 @@ public class Validator {
     public static boolean isEmailValid(String email) {
         return email.matches(EMAIL_PATTERN);
     }
+
+    public static boolean isDescriptionValid(String description) {
+        return description.length() > 0;
+    }
+
+    public static boolean isPointsValid(String points) {
+        String rejex = "[1-9]+[0-9]*";
+        return points.matches(rejex);
+    }
 }

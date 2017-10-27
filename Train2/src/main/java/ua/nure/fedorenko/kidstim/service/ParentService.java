@@ -1,14 +1,19 @@
 package ua.nure.fedorenko.kidstim.service;
 
-import ua.nure.fedorenko.kidstim.model.entity.Parent;
+import ua.nure.fedorenko.kidstim.service.dto.ChildDTO;
+import ua.nure.fedorenko.kidstim.service.dto.ParentDTO;
+
+import java.util.List;
 
 public interface ParentService {
 
-    void addParent(Parent parent);
+    void addParent(ParentDTO parent);
 
-    Parent getParentById(String id);
+    ParentDTO getParentById(String id);
 
-    Parent getParentByEmail(String email);
+    ParentDTO getParentByEmail(String email);
 
-    Parent updateParent(Parent parent);
+    ParentDTO updateParent(ParentDTO parent);
+
+    List<ChildDTO>getParentsChildren(String parent);
 }

@@ -12,21 +12,30 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.io.File;
 import java.util.List;
 
 import butterknife.BindView;
+import rx.Single;
+import rx.SingleSubscriber;
+import rx.Subscriber;
 import ua.nure.fedorenko.kidstim.entity.ChildDTO;
+import ua.nure.fedorenko.kidstim.rest.APIServiceImpl;
 import ua.nure.fedorenko.train2app.R;
 
 public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ViewHolder> {
 
     private List<ChildDTO> children;
     private Context context;
+    private Bitmap image;
+    private APIServiceImpl apiService;
 
     public ChildAdapter(List<ChildDTO> children, Context context) {
         this.children = children;
         this.context = context;
+        apiService = new APIServiceImpl(context);
     }
 
     @Override
@@ -42,13 +51,21 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ViewHolder> 
         ChildDTO child = children.get(position);
         holder.childNameTextView.setText(child.getName());
         holder.childPointsTextView.setText(String.valueOf(child.getPoints()));
-        File imgFile = new File(child.getPhoto());
-        if (imgFile.exists()) {
-            Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-            holder.childImageView.setImageBitmap(bitmap);
-        } else {
-            holder.childImageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.account));
-        }
+        Single<Byte[]> single = apiService.getImage(child.getPhoto());
+        SingleSubscriber<Byte[]> singleSubscriber = new SingleSubscriber<Byte[]>() {
+            @Override
+            public void onSuccess(Byte[] value) {
+                image = BitmapFactory.decodeByteArray(ArrayUtils.toPrimitive(value), 0, value.length);
+                holder.childImageView.setImageBitmap(image);
+            }
+
+            @Override
+            public void onError(Throwable error) {
+
+            }
+        };
+        single.subscribe(singleSubscriber);
+
     }
 
     @Override

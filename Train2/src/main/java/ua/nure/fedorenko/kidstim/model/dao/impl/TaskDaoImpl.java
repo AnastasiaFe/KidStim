@@ -1,5 +1,6 @@
 package ua.nure.fedorenko.kidstim.model.dao.impl;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ public class TaskDaoImpl implements TaskDao {
 
     @Autowired
     private SessionFactory sessionFactory;
-
 
 
     @Override
@@ -34,12 +34,14 @@ public class TaskDaoImpl implements TaskDao {
 
     @Override
     public void deleteTask(Task task) {
-        sessionFactory.getCurrentSession().delete(task);
+        Session session = sessionFactory.getCurrentSession();
+        Object findAAgain = session.merge(task);
+        session.delete(findAAgain);
     }
 
     @Override
     public List<Task> getTasksByParent(String parentId) {
-        Query query = sessionFactory.getCurrentSession().createQuery("FROM Task t where parent.id=:id");
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM Task where parent.id=:id");
         query.setParameter("id", parentId);
         return query.getResultList();
     }

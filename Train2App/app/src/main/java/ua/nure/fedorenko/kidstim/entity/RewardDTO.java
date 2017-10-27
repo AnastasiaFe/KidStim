@@ -6,14 +6,48 @@ import java.util.List;
 public class RewardDTO implements Serializable {
 
     private String id;
-
     private String description;
-
     private int points;
-
     private RewardStatus status;
-
     private ParentDTO parent;
+    private List<ChildDTO> children;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RewardDTO)) return false;
+
+        RewardDTO rewardDTO = (RewardDTO) o;
+
+        if (getPoints() != rewardDTO.getPoints()) return false;
+        if (!getId().equals(rewardDTO.getId())) return false;
+        if (getDescription() != null ? !getDescription().equals(rewardDTO.getDescription()) : rewardDTO.getDescription() != null)
+            return false;
+        if (getStatus() != rewardDTO.getStatus()) return false;
+        if (getParent() != null ? !getParent().equals(rewardDTO.getParent()) : rewardDTO.getParent() != null)
+            return false;
+        return getChildren() != null ? getChildren().equals(rewardDTO.getChildren()) : rewardDTO.getChildren() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId().hashCode();
+        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
+        result = 31 * result + getPoints();
+        result = 31 * result + (getStatus() != null ? getStatus().hashCode() : 0);
+        result = 31 * result + (getParent() != null ? getParent().hashCode() : 0);
+        result = 31 * result + (getChildren() != null ? getChildren().hashCode() : 0);
+        return result;
+    }
+
+    public List<ChildDTO> getChildren() {
+
+        return children;
+    }
+
+    public void setChildren(List<ChildDTO> children) {
+        this.children = children;
+    }
 
     public String getId() {
         return id;
@@ -22,15 +56,6 @@ public class RewardDTO implements Serializable {
     public void setId(String id) {
         this.id = id;
     }
-
-    public RewardStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(RewardStatus status) {
-        this.status = status;
-    }
-
 
     public String getDescription() {
         return description;
@@ -46,32 +71,14 @@ public class RewardDTO implements Serializable {
 
     public void setPoints(int points) {
         this.points = points;
-
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        RewardDTO rewardDTO = (RewardDTO) o;
-
-        if (points != rewardDTO.points) return false;
-        if (!id.equals(rewardDTO.id)) return false;
-        if (description != null ? !description.equals(rewardDTO.description) : rewardDTO.description != null)
-            return false;
-        if (status != rewardDTO.status) return false;
-        return parent != null ? parent.equals(rewardDTO.parent) : rewardDTO.parent == null;
+    public RewardStatus getStatus() {
+        return status;
     }
 
-    @Override
-    public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + points;
-        result = 31 * result + (status != null ? status.hashCode() : 0);
-        result = 31 * result + (parent != null ? parent.hashCode() : 0);
-        return result;
+    public void setStatus(RewardStatus status) {
+        this.status = status;
     }
 
     public ParentDTO getParent() {

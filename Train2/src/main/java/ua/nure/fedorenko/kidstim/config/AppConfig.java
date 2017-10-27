@@ -11,14 +11,15 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan({ "ua.nure.fedorenko.kidstim" })
-@PropertySource(value = { "classpath:application.properties" })
+@ComponentScan({"ua.nure.fedorenko.kidstim"})
+@PropertySource(value = {"classpath:application.properties"})
 public class AppConfig {
 
     @Autowired
@@ -31,6 +32,13 @@ public class AppConfig {
         sessionFactory.setPackagesToScan("ua.nure.fedorenko.kidstim.model.entity");
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
+    }
+
+    @Bean(name = "multipartResolver")
+    public CommonsMultipartResolver multipartResolver() {
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+        multipartResolver.setMaxUploadSize(10485760);
+        return multipartResolver;
     }
 
     @Bean

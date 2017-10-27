@@ -1,20 +1,20 @@
 package ua.nure.fedorenko.kidstim.service;
 
-import ua.nure.fedorenko.kidstim.model.entity.Reward;
+import ua.nure.fedorenko.kidstim.service.dto.RewardDTO;
 
 import java.util.List;
 
 public interface RewardService {
 
-    Reward getRewardById(String id);
+    RewardDTO getRewardById(String id);
 
-    void addReward(Reward reward);
+    void addReward(RewardDTO reward);
 
-    Reward updateReward(Reward reward);
+    RewardDTO updateReward(RewardDTO reward);
 
-    void deleteReward(Reward reward);
+    void deleteReward(String id);
 
-    List<Reward>getRewardsByParent(String parent);
+    List<RewardDTO> getRewardsByParent(String parent);
 
 
 }

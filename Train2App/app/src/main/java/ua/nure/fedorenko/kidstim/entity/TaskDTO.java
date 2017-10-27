@@ -30,38 +30,6 @@ public class TaskDTO implements Serializable {
 
     public List<ChildDTO> children;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof TaskDTO)) return false;
-
-        TaskDTO taskDTO = (TaskDTO) o;
-
-        if (getCreationDate() != taskDTO.getCreationDate()) return false;
-        if (getExpirationDate() != taskDTO.getExpirationDate()) return false;
-        if (getPoints() != taskDTO.getPoints()) return false;
-        if (getChildren() != null ? !getChildren().equals(taskDTO.getChildren()) : taskDTO.getChildren() != null)
-            return false;
-        if (!getId().equals(taskDTO.getId())) return false;
-        if (getDescription() != null ? !getDescription().equals(taskDTO.getDescription()) : taskDTO.getDescription() != null)
-            return false;
-        if (getStatus() != taskDTO.getStatus()) return false;
-        return getParent() != null ? getParent().equals(taskDTO.getParent()) : taskDTO.getParent() == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = getChildren() != null ? getChildren().hashCode() : 0;
-        result = 31 * result + getId().hashCode();
-        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
-        result = 31 * result + (getStatus() != null ? getStatus().hashCode() : 0);
-        result = 31 * result + (int) (getCreationDate() ^ (getCreationDate() >>> 32));
-        result = 31 * result + (int) (getExpirationDate() ^ (getExpirationDate() >>> 32));
-        result = 31 * result + getPoints();
-        result = 31 * result + (getParent() != null ? getParent().hashCode() : 0);
-        return result;
-    }
-
     public List<ChildDTO> getChildren() {
 
         return children;
@@ -114,4 +82,32 @@ public class TaskDTO implements Serializable {
     private int points;
     private ParentDTO parent;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TaskDTO taskDTO = (TaskDTO) o;
+
+        if (creationDate != taskDTO.creationDate) return false;
+        if (expirationDate != taskDTO.expirationDate) return false;
+        if (points != taskDTO.points) return false;
+        if (!id.equals(taskDTO.id)) return false;
+        if (description != null ? !description.equals(taskDTO.description) : taskDTO.description != null)
+            return false;
+        if (status != taskDTO.status) return false;
+        return parent != null ? parent.equals(taskDTO.parent) : taskDTO.parent == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (int) (creationDate ^ (creationDate >>> 32));
+        result = 31 * result + (int) (expirationDate ^ (expirationDate >>> 32));
+        result = 31 * result + points;
+        result = 31 * result + (parent != null ? parent.hashCode() : 0);
+        return result;
+    }
 }
